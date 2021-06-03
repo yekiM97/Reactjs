@@ -1,0 +1,63 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.12.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+  <script src="https://unpkg.com/prop-types@15.6.1/prop-types.js"></script>
+  <style>
+    .box {
+      border: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+    .box--large {
+      width: 270px;
+      height: 270px;
+    }
+    .box--medium {
+      width: 180px;
+      height: 180px;
+    }
+    .box--small {
+      width: 90px;
+      height: 90px;
+    }
+  </style>
+  <script type="text/babel">
+    const rootElement = document.getElementById("root");
+
+    function TypeName() {
+      const [name, setName] = React.useState(
+        window.localStorage.getItem("name") || ""
+      );
+      const handleChangeName = (event) => setName(event.target.value);
+
+      React.useEffect(() => window.localStorage.setItem("name", name));
+
+      const [name2, setName2] = React.useState("");
+      const handleChangeName2 = (event) => setName2(event.target.value);
+
+      return (
+        <div>
+          <form>
+            <label htmlFor="name">Name: </label>
+            <input value={name} onChange={handleChangeName} id="name" />
+          </form>
+          {name ? <strong>Hello {name}</strong> : "Please type your name"}
+
+          <div>
+            <form>
+              <label htmlFor="name2">Name: </label>
+              <input onChange={handleChangeName2} id="name2" />
+            </form>
+            {name2 ? <strong>Hello {name2}</strong> : "Please type your name"}
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<TypeName />, rootElement);
+  </script>
+</body>
