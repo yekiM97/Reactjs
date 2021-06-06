@@ -8,16 +8,23 @@
   <script type="text/babel">
     const rootElement = document.getElementById("root");
 
-    function TypeName() {
-      const [name, setName] = React.useState(
-        () => window.localStorage.getItem("name") || ""
+    function useLocalStorageState(key, defaultValue = "") {
+      const [state, setState] = React.useState(
+        () => window.localStorage.getItem(key) || defaultValue
       );
 
       //every single time the 'name' has change => the log 'Hi' wil be call
+      //if hook have {} but u want to storage value u have to provide second agrument (if not, when refresh will back to the default value)
+      //and if hook doesnt have {} it just storage straight to the local storage and no need second agrument
       React.useEffect(() => {
-        console.log("Hi");
-        window.localStorage.setItem("name", name);
-      }, [name]);
+        window.localStorage.setItem(key, state);
+      }, [state] /*<== here is second agrument (a deps (dependencies))*/);
+
+      return [state, setState];
+    }
+
+    function TypeName() {
+      const [name, setName] = useLocalStorageState("name");
 
       const handleChangeName = (event) => setName(event.target.value);
 
@@ -32,19 +39,6 @@
       );
     }
 
-    function App() {
-      const [count, setCount] = React.useState(0);
-
-      const handleClick = () => setCount((c) => c + 1);
-
-      return (
-        <div>
-          <button onClick={handleClick}>{count}</button>
-          <TypeName />
-        </div>
-      );
-    }
-
-    ReactDOM.render(<App />, rootElement);
+    ReactDOM.render(<TypeName />, rootElement);
   </script>
 </body>
